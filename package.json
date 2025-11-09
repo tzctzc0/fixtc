@@ -1,0 +1,5 @@
+{
+	"scripts": {
+		"gen-zip-win": "gen-zip-win.ps1"
+	}
+}
