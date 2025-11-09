@@ -1,0 +1,15 @@
+{
+	"manifest_version": 3,
+	"name": "nocolrev",
+	"version": "1.0",
+	"permissions": [],
+	"host_permissions": ["https://*.live/*"],
+	"content_scripts": [
+		{
+			"matches": ["https://*.live/*"],
+			"js": ["content.js"],
+			"run_at": "document_start",
+			"world": "MAIN"
+		}
+	]
+}
