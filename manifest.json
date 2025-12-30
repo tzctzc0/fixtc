@@ -1,7 +1,8 @@
 {
 	"manifest_version": 3,
-	"name": "nocolrev",
-	"version": "1.0",
+	"name": "fixtc",
+	"version": "1.1",
+	"description": "Fix text color",
 	"permissions": [],
 	"host_permissions": ["https://*.live/*"],
 	"content_scripts": [
