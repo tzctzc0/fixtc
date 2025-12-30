@@ -69,6 +69,31 @@ Object.defineProperty(window, 'jQuery', {
 	},
 	configurable: true,
 })
+const observer = new MutationObserver(muts => {
+	for (const mut of muts) {
+		if (mut.type !== 'childList') continue
+		
+		for (const node of mut.addedNodes) {
+			if (node.nodeType !== Node.ELEMENT_NODE) continue
+			
+			const elem = /** @type {Element} */ (node)
+			if (!elem.hasAttribute('style')) continue
+			
+			const inlineColor = elem.style.color.replace(/\s/g, '')
+			if (!inlineColor) continue
+			
+			if (inlineColor === 'rgb(0,0,0)'
+				/* || inlineColor === 'rgb(255,255,255)' */
+				// the editor has white background regardless of theme
+				// so assume no one will change text color to white accidentally
+			) {
+				// consider this as an oversight by the post's author
+				elem.style.color = ''
+			}
+		}
+	}
+})
+observer.observe(document, { childList: true, subtree: true })
 window.addEventListener('load', () => {
 	if (document.readyState !== 'complete') return
 	
@@ -77,5 +102,6 @@ window.addEventListener('load', () => {
 		if (origCssFn) {
 			restoreCssFn(window.jQuery)
 		}
+		observer.disconnect()
 	}, 0) // restore everything after other event listeners are executed
 })
