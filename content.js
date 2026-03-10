@@ -52,6 +52,24 @@ function restoreCssFn(jq) {
 		value: origCssFn,
 	})
 }
+function isGrayscaleColor(color) {
+	function extractColorAsRgb(color) {
+		const rgbCallMatch = color.match(/^rgb\((\d+),(\d+),(\d+)\)$/)
+		if (rgbCallMatch) {
+			const [, r, g, b] = rgbCallMatch
+			return [Number(r), Number(g), Number(b)]
+		} else {
+			return null
+		}
+	}
+	
+	const rgb = extractColorAsRgb(color)
+	if (!rgb) return false
+	
+	const [r, g, b] = rgb
+	const avg = (r + g + b) / 3
+	return rgb.every(c => Math.abs(c - avg) <= 5)
+}
 
 // workflow:
 // 1. patch window.jQuery to detect setting window.jQuery
@@ -86,6 +104,7 @@ const observer = new MutationObserver(muts => {
 				/* || inlineColor === 'rgb(255,255,255)' */
 				// the editor has white background regardless of theme
 				// so assume no one will change text color to white accidentally
+				|| isGrayscaleColor(inlineColor)
 			) {
 				// consider this as an oversight by the post's author
 				elem.style.color = ''
