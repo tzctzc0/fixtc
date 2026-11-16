@@ -100,8 +100,8 @@ const observer = new MutationObserver(muts => {
 			const inlineColor = elem.style.color.replace(/\s/g, '')
 			if (!inlineColor) continue
 			
-			if (inlineColor === 'rgb(0,0,0)'
-				/* || inlineColor === 'rgb(255,255,255)' */
+			if (inlineColor === 'rgb(0,0,0)' || inlineColor === 'black'
+				/* || inlineColor === 'rgb(255,255,255)' || inlineColor === 'white' */
 				// the editor has white background regardless of theme
 				// so assume no one will change text color to white accidentally
 				|| isGrayscaleColor(inlineColor)
